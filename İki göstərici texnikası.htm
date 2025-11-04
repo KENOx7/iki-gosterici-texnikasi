@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>İki göstərici texnikası</title>
+    
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.6;
+            background-color: #1a1a1a; /* Tünd fon */
+            color: #e0e0e0; /* Açıq mətn */
+            margin: 0;
+            padding: 0;
+        }
+        main {
+            max-width: 900px;
+            margin: 20px auto;
+            padding: 25px;
+            background-color: #2b2b2b; /* Əsas məzmun üçün bir az daha açıq tünd fon */
+            border-radius: 8px;
+            border: 1px solid #3d3d3d; /* Zəif sərhəd */
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+        h1 {
+            color: #ffffff; /* Açıq başlıq */
+            border-bottom: 2px solid #4a4a4a; /* Tünd ayırıcı xətt */
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #f1f1f1; /* Açıq başlıq */
+            border-bottom: 1px solid #444; /* Tünd ayırıcı xətt */
+            padding-bottom: 5px;
+            margin-top: 40px;
+        }
+        h3 {
+            color: #b0b0b0; /* Bir az daha sönük başlıq */
+            margin-top: 30px;
+        }
+        p, li {
+            font-size: 16px;
+            color: #e0e0e0; /* Açıq mətn */
+        }
+        
+        /* Linklər (əgər olarsa) */
+        a {
+            color: #569cd6; /* Mavi rəngli linklər */
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        
+        /* Sətirdaxili kod bloku */
+        code {
+            font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
+            background-color: #3c3c3c; /* Kod üçün tünd fon */
+            color: #f1f1f1;
+            padding: 2px 5px;
+            border-radius: 4px;
+            font-size: 0.95em;
+        }
+        
+        /* Böyük kod bloku (VS Code Dark Theme-ə bənzər) */
+        pre {
+            background-color: #1e1e1e;
+            color: #d4d4d4;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            border: 1px solid #333;
+        }
+        pre code {
+            background-color: transparent;
+            padding: 0;
+            color: inherit;
+        }
+        /* Python kod rəngləməsi üçün stillər */
+        pre code .token.comment { color: #6a9955; }
+        pre code .token.keyword { color: #569cd6; }
+        pre code .token.string { color: #ce9178; }
+        pre code .token.number { color: #b5cea8; }
+        pre code .token.function { color: #dcdcaa; }
+        pre code .token.punctuation { color: #d4d4d4; }
+        pre code .token.operator { color: #d4d4d4; }
+        
+        /* Tapşırıq bloku */
+        .task-box {
+            background-color: #2a3a4a; /* Tünd göy fon */
+            border: 1px solid #3a5a7a;
+            border-left: 5px solid #569cd6; /* Açıq göy vurğu */
+            padding: 15px 20px;
+            margin-top: 20px;
+            border-radius: 5px;
+        }
+
+        /* Tapşırıq blokundakı gizli cavab (details/summary) */
+        details {
+            margin-top: 15px;
+        }
+        summary {
+            cursor: pointer;
+            color: #f1f1f1;
+            font-weight: bold;
+        }
+
+        /* Yeni əlavə edilmiş stillər */
+        .reference {
+            background: linear-gradient(180deg, rgba(86,156,214,0.06), rgba(86,156,214,0.02));
+            border: 1px solid rgba(86,156,214,0.12);
+            padding: 12px 16px;
+            border-radius: 6px;
+            margin-top: 20px;
+        }
+        .pascal-row { text-align: center; margin: 6px 0; font-family: monospace; }
+        .quick-list { display: grid; grid-template-columns: repeat(auto-fit,minmax(220px,1fr)); gap: 12px; margin-top: 12px; }
+        .card { background-color: #232323; padding: 12px; border-radius: 6px; border: 1px solid #333; }
+
+    </style>
+
+    <script type="text/javascript">
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement({
+                pageLanguage: 'az', 
+                includedLanguages: 'en,ru', 
+                layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+            }, 'google_translate_element');
+        }
+    </script>
+    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+    </head>
+<body>
+    <main>
+        <h1>İki göstərici texnikası</h1>
+    
+        <p><strong>İki göstərici texnikası</strong>, kompüter elmləri və proqramlaşdırmada massivlər və ya ardıcıllıqlarla bağlı problemlərin həllində geniş istifadə olunur. Bu metod, bir massiv və ya siyahı üzərində eyni anda iki fərqli mövqedə duran göstəricilərlə (index-lərlə) işləməyi nəzərdə tutur. Göstəricilər bəzən <em>əks istiqamətlərdə</em>, bəzən isə <em>fərqli sürətlə</em> hərəkət edir.</p>
+    
+        <p>Bu texnika adətən aşağıdakı hallarda tətbiq olunur:</p>
+        <ul>
+            <li>Massivdə müəyyən cüt elementləri tapmaq üçün (məsələn, cəmi müəyyən bir ədədə bərabər olan cütlər);</li>
+            <li>Massivi və ya siyahını tərsinə çevirmək üçün;</li>
+            <li>İki siyahını birləşdirmək və ya sıralı massivlər üzərində axtarış aparmaq üçün.</li>
+        </ul>
+    
+        <h2>İş prinsipi</h2>
+    
+        <ol>
+            <li><strong>Başlanğıc:</strong> Göstəricilər massivdə müxtəlif mövqelərə yerləşdirilir (məsələn, biri əvvəlində, biri sonunda).</li>
+            <li><strong>Hərəkət:</strong> Müəyyən şərtlərə əsasən göstəricilər hərəkət edir.</li>
+            <li><strong>Yoxlama:</strong> Hər addımda şərtlər yoxlanılır, məsələn cütlərin cəmi, sıralama və s.</li>
+            <li><strong>Tamamlanma:</strong> Şərtlər ödənmədikdə və ya göstəricilər görüşdükdə proses dayanır.</li>
+        </ol>
+    
+        <h2>Python realizasiyası — siyahının tərsinə çevrilməsi</h2>
+    
+        <p>İndi iki göstərici texnikasını ən sadə nümunə ilə izah edək — siyahını tərsinə çevirmək.  
+        Bunun üçün biri başlanğıcdan, digəri sondan başlayan iki göstəricidən istifadə edəcəyik.</p>
+    
+        <pre><code>
+    # Siyahının uzunluğunu və elementlərini oxuyuruq
+    n = int(input("Elementlərin sayını daxil edin: "))
+    lst = list(map(int, input("Elementləri daxil edin: ").split()))
+    
+    # İki göstərici müəyyən edirik
+    sol = 0
+    sag = n - 1
+    
+    # Göstəricilər görüşənə qədər dəyişdiririk
+    while sol &lt; sag:
+        lst[sol], lst[sag] = lst[sag], lst[sol]
+        sol += 1
+        sag -= 1
+    
+    print("Tərsinə çevrilmiş siyahı:")
+    print(*lst)
+        </code></pre>
+    
+        <div class="task-box">
+            <strong>İzah:</strong>  
+            <ul>
+                <li>Əvvəlcə siyahının elementlərini oxuyuruq.</li>
+                <li><code>sol</code> göstərici 0-dan, <code>sag</code> göstərici isə son elementdən başlayır.</li>
+                <li>Hər döngədə bu iki elementin yerləri dəyişdirilir.</li>
+                <li>Beləcə siyahı tərsinə çevrilmiş olur.</li>
+            </ul>
+        </div>
+    
+        <h2>Python realizasiyası — cəmi müəyyən ədədə bərabər olan cütlərin tapılması</h2>
+    
+        <p>Bu nümunədə iki göstərici texnikasından istifadə edərək, cəmi <code>target</code>-ə bərabər olan element cütlərini tapacağıq.</p>
+    
+        <pre><code>
+    # Giriş məlumatlarını oxuyuruq
+    n = int(input("Elementlərin sayını daxil edin: "))
+    lst = list(map(int, input("Elementləri daxil edin: ").split()))
+    target = int(input("Axtarılan cəmi daxil edin: "))
+    
+    # Siyahını sıralayırıq
+    lst.sort()
+    
+    # Göstəricilər
+    sol = 0
+    sag = n - 1
+    
+    # Cütləri tapırıq
+    while sol &lt; sag:
+        cem = lst[sol] + lst[sag]
+        if cem == target:
+            print(lst[sol], "+", lst[sag], "=", target)
+            sol += 1
+            sag -= 1
+        elif cem &lt; target:
+            sol += 1
+        else:
+            sag -= 1
+        </code></pre>
+    
+        <div class="task-box">
+            <strong>İzah:</strong>
+            <ul>
+                <li>Siyahı əvvəlcə sıralanır.</li>
+                <li><code>sol</code> və <code>sag</code> göstəriciləri ilə başlanır.</li>
+                <li>Əgər cəmləri hədəf ədədə bərabərdirsə, nəticə çap olunur.</li>
+                <li>Cəm hədəfdən kiçikdirsə, <code>sol</code> göstərici artırılır, böyükdürsə, <code>sag</code> azaldılır.</li>
+            </ul>
+        </div>
+    
+        <div class="reference">
+            <strong>Nəticə:</strong>  
+            İki göstərici texnikası kodun sadələşdirilməsinə, vaxtın optimallaşdırılmasına və 
+            iç-içə döngələrin qarşısının alınmasına kömək edir. Bu üsul çox vaxt 
+            <em>O(n)</em> mürəkkəbliklə işləyir və səmərəli həll təqdim edir.
+        </div>
+    </main>
+    
+</body>
+</html>
